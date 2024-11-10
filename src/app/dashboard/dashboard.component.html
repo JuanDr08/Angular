@@ -1,0 +1,17 @@
+
+<div
+    class="flex bg-slate-100 overflow-y-scroll w-screen h-screen antialiased text-black selection:bg-blue-600 selection:text-white">
+    <div class="flex relative w-screen">
+
+        <app-sidemenu/> <!-- De esta manera llamamos al componente con el selector 'app-sidemenu', 
+        si quisieramos llamar otro componente diferente solo habria que llamarlo con el selector que se le dio en su .component.ts  -->
+
+        <div class="text-black px-2 mt-2 w-full">
+
+            <router-outlet/>
+
+        </div>
+
+
+    </div>
+</div>
