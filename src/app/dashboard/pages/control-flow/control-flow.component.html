@@ -1,1 +1,90 @@
-<p>control-flow works!</p>
+<app-title title="Control Flow" boolExample/> <!-- Se llama el TitleComponent y se le pasa la prop 'titulo', y al estar boolExample presente entonces se tomara como true -->
+
+<section class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <!-- @If -->
+    <div class="bg-white shadow p-10">
+
+        <h2 class="text-2xl font-bold mb-5">if: {{showContent()}}</h2>
+        <!-- 
+            (click) es una funcion que provee Angular la cual se ejecuta cuando se hace click
+            y se le pasa la funcion que queremos ejecutar del archivo .ts o podemos hacer el codigo
+            ahi mismo
+        -->
+        <button 
+        class="p-2 bg-blue-500 rounded text-white" 
+        (click)="toggleContent()">
+        Click me!</button>
+
+        @if ( showContent() ) { <!-- Al ser wrapper, llamamos su valor con () -->
+            <p>Hola mundo</p>
+        } @else {
+            <p>********,</p>
+        }
+
+    </div>
+
+    <!-- @Switch -->
+    <div class="bg-white shadow p-10"> 
+        
+        <h2 class="text-3xl">{{ grade() }}</h2>
+
+        @switch (grade()) {
+            @case ('A') {
+                <p>Arriba de 90</p>
+            }
+            @case ('B') {
+                <p>Arriba de 80</p>
+            }
+            @case ('F') {
+                <p>Reprobado</p>
+            }
+            @default {
+                <p>No hay nota</p>
+            }
+        }
+
+    </div>
+
+    <!-- @For -->
+    <div class="bg-white shadow p-10"> 
+
+        <ul>
+            <!--
+                Hacemos el track en base al framework ya que sabemos que es unico
+
+                Esta nueva sintaxis del for tambien nos ofrece varias propiedades utiles con las que podemos trabajar como las que se ven acontinuacion
+                $index: indice del elemento en el for
+                $first: indica si es el primer elemento del for
+                $last: indica si es el ultimo elemento del for
+                $even: indica si es el indice del elemento es par
+                $odd: indica si es el indice del elemento es impar
+                $count: indica el numero total de elementos que se estan iterando
+            -->
+            @for (framework of frameworks(); track framework;
+            let i = $index, first = $first, last = $last, even = $even, odd = $odd, count = $count) {
+                <!-- Aplicar estilos condicionados -->
+                <li [class]="{
+                    'bg-red-100': even && !first && !last,
+                    'bg-purple-100': odd && !first && !last,
+                    'bg-blue-100': first && last,
+                }" > {{ i + 1 }}/{{ count }} - {{ framework }}</li>
+            }
+        </ul>
+
+    </div>
+
+    <div class="bg-white shadow p-10"> 
+
+        <ul>
+            <!-- Hacemos el track en base al framework ya que sabemos que es unico -->
+            @for (framework of frameworks2(); track framework) {
+                <li>{{ framework }}</li>
+            } @empty { <!-- El @empty es util para manejar los casos en los que un arreglo esta vacio y mostrar cierto contenido si esta vacio,
+                para evitar usar condiciones de verificacion -->
+                <li>No hay frameworks</li>
+            }
+        </ul>
+
+    </div>
+
+</section>
