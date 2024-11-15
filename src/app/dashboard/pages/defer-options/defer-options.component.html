@@ -1,1 +1,142 @@
-<p>defer-options works!</p>
+<app-title title="Defer Options"/>
+
+
+<section>
+
+    <h1 class="text-xl">Interacciones</h1>
+    <hr class="my-2">
+    <!-- 
+        El evento on interaction es disparado cuando el usuario hace un click o un keydown,haciendo que literalmente el componente
+        no se cargue hasta que el usuario no de clic sobre la zona del placeholder, ni console logs se ejecutaran hasta que el usuario
+        no interactue
+
+        El on interaction tiene que si o si ser usado junto con un bloque placeholder
+    -->
+    @defer (on interaction) {
+        <app-heavy-loaders-fast cssClass="bg-blue-500 h-20" >
+            <span class="text-white">On Interaction</span> <!-- Al haber habilitado el ng-content, todo el contenido que pongamos dentro de las etiquetas del
+            componente se insertara en la posicion de ng-content, en este caso el contenido de span -->
+        </app-heavy-loaders-fast>
+    } @placeholder {
+        <div class="w-full h-20 bg-purple-100">
+            Click en el div
+        </div>
+    }
+
+</section>
+
+<section>
+
+    <hr class="my-2">
+    <!-- 
+        El on interaction tambien nos permite delegar las dependencias del renderizado a la interaccion con algun otro elemento local
+
+        En este caso creamos un boton y le asignamos un nombre que lo referencie de manera local, como es en este caso btnInteraction
+        y en la creacion del evento de on interaction le pasamos como si fuera un parametro el nombre del boton,
+        esto nos permite habilitar que el evento se dispare cuando el boton sea presionado, haciendo de esta forma que la carga diferida
+        dependa de un elemento local
+    -->
+
+    <button #btnInteraction class="p-2 bg-blue-500 hover:bg-blue-700 transition-all rounded text-white my-2">Click me</button>
+
+    @defer (on interaction(btnInteraction) ) {
+        <app-heavy-loaders-fast cssClass="bg-blue-500 h-20" >
+            <span class="text-white">On Interaction</span> 
+        </app-heavy-loaders-fast>
+    } @placeholder {
+        <div class="w-full h-20 bg-purple-100">
+            Click en el div
+        </div>
+    }
+
+</section>
+
+<section>
+
+    <hr class="my-2">
+    <!-- 
+        El evento on hover basicamente activa la carga diferida cuando el usuario se posiciona sobre el placeholder de nuestro componente
+
+        Al evento hover tambien se le puede cambiar la dependencia a alguna referencia local, como podria ser el boton, haciendo que la
+        carga diferida se active cuando el usuario pase sobre dico boton o la dependecia que le especificamos
+        EJ: on hover(btnInteraction)
+    -->
+
+    @defer (on hover) {
+        <app-heavy-loaders-fast cssClass="bg-blue-500 h-20" >
+            <span class="text-white">On Interaction</span> 
+        </app-heavy-loaders-fast>
+    } @placeholder {
+        <div class="w-full h-20 bg-purple-100">
+            Click en el div
+        </div>
+    }
+
+</section>
+
+<section>
+
+    <hr class="my-2">
+    <!-- 
+        On immediate activa la carga diferida TAN PRONTO PUEDA, es decir, cuando se haya construido la aplicacion, apenas pueda hacer
+        la carga sin bloquear la aplicacion
+    -->
+
+    @defer (on immediate) {
+        <app-heavy-loaders-fast cssClass="bg-blue-500 h-20" >
+            <span class="text-white">On Interaction</span> 
+        </app-heavy-loaders-fast>
+    } @placeholder {
+        <div class="w-full h-20 bg-purple-100">
+            Click en el div
+        </div>
+    }
+
+</section>
+
+<section>
+
+    <hr class="my-2">
+    <!-- 
+        on timer es como un setTimeout, activa la carga diferida despues de que pase un tiempo especificado
+    -->
+
+    @defer (on timer(2000)) {
+        <app-heavy-loaders-fast cssClass="bg-blue-500 h-20" >
+            <span class="text-white">On timer</span> 
+        </app-heavy-loaders-fast>
+    } @placeholder {
+        <div class="w-full h-20 bg-purple-100">
+            2 segundos
+        </div>
+    }
+
+</section>
+
+<section>
+
+    <hr class="my-2">
+    <!-- 
+        Podemos hacer dos, o mas condiciones para disparara la carga diferida, y cuando una de las dos se cumpla la carga diferida se dispara
+
+        En este caso ponemos on hover y en este caso hacemos uso de la palabra prefetch, la cual es especial para 'pre-cargar'
+        el componente pero no mostrarlo, ES DIFERENTE a cargarlo en el background, lo que hace es preparar el codigo js que construye el
+        componente para cargarlo cuando se dispare alguna de las condiciones de carga
+
+        El prefetch es util para cuando tenemos componentes muy pesados o que tienen otros componentes dentro de el
+
+        'prefetch on idle' en resumen pre-carga/prepara el componente (en la accion idle) para que no sea tan pesado renderizarlo cuando
+        se dispare la carga
+    -->
+
+    @defer (on hover; prefetch on idle) {
+        <app-heavy-loaders-fast cssClass="bg-blue-500 h-20" >
+            <span class="text-white">On hover, on idle</span> 
+        </app-heavy-loaders-fast>
+    } @placeholder {
+        <div class="w-full h-20 bg-purple-100">
+            hover
+        </div>
+    }
+
+</section>

@@ -1,1 +1,58 @@
-<p>defer-views works!</p>
+<app-title title="Defer Views"/>
+
+<section class="grid grid-cols-1">
+
+    <!-- 
+        Cuando tenemos bloques de codigo o componentes sumamente pesados que pueden bloquear nuestro codigo y por lo tanto dar mala experiencia al usuario es cuando
+        entran los defer, los cuales son como un lazy load pero muco mas potentes, este decorador nos permite evitar que aunque nuestro codigo sea pesado, la aplicacion pueda
+        de igual manera ser renderizada, obviamente ira lenta, pero almenos permite la navegacion o el resto de componentes presentes.
+
+        Primero se carga el componente y luego se carga el contenido del defer
+
+        Los defer nos pueden incluso permitir no cargar componentes pesados si no estan visibles en la pantalla, y al momento de estar visibles los cargara.
+
+        A parte de el decorador defer, tambuen encontramos uno llamado placeholder, el cual nos permite mostrar algun contenido mientras el codigo pesado se carga, una vez
+        cargado el codigo pesado se renderizara el contenido cargado.
+
+        en resumidas cuentas el defer nos permite tener mayor control sobre nuestro codigo pesado o bloqueante, mejorando la experiencia del usuario con una carga controlada
+        similar a loque hace el lazy load pero con mayor control y potencia, le podemos decir al codigo de que manera queremos que se cargue un componente
+
+        !IMPORTANTE, la carga diferida no va a cargar el codigo ni de misma manera ni de arriba abajo, durante la carga puede que alguno se cargue mas rapido que otro, esto
+        en el caso de tener mas de una carga diferida
+
+        Hay dos opciones que podemos usar para controlar cuando un componente se carga, estas funciones son: on y when
+
+        on: se ejecuta por asi decirlo con alguna interaccion
+            - En el siguiente PDF se podra encontrar en la pagina 8 una tabla con los posibles eventos de on que podemos usar
+            [https://devtalles.com/files/angular-cheat-sheet-v2.pdf]
+
+        when: se ejecuta segun alguna condicion que le interpongamos
+    -->
+
+    @defer (on viewport) { <!-- on viewport basicamente carga el codigo/componente cuando se encuentra a la vista del usuario -->
+
+        <app-heavy-loaders-slow cssClass="bg-blue-500"/>
+
+    } @placeholder {
+        <p class="h-[600px] w-full bg-gradient-to-r from-gray-200 to-gray-400 animate-pulse ">Loading...</p>
+    }
+    <!-- on idle es un trigger que se dispara cuando el navegador llega a un estado de inactividad, esto ocurre cuando ya se construyen
+    todos los componentes, las rutas, todo ya esta listo entra en un estado de inactividad, ahi es cuando se dispara el trigger
+    -->
+    @defer (on idle) {
+
+        <app-heavy-loaders-slow cssClass="bg-green-500"/>
+
+    } @placeholder {
+        <p class="h-[600px] w-full bg-gradient-to-r from-gray-200 to-gray-400 animate-pulse ">Loading...</p>
+    }
+
+    @defer (on viewport) {
+
+        <app-heavy-loaders-slow cssClass="bg-purple-500"/>
+
+    } @placeholder {
+        <p class="h-[600px] w-full bg-gradient-to-r from-gray-200 to-gray-400 animate-pulse ">Loading...</p>
+    }
+
+</section>

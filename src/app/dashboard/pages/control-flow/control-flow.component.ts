@@ -23,7 +23,7 @@ export default class ControlFlowComponent {
 		public showContent = signal(false).asReadonly()
 	*/
 	public showContent = signal(false)
-	public grade = signal<Grade>('A')
+	public grade = signal<Grade>('F')
 
 	public frameworks = signal(['Angular', 'React', 'Vue', 'Svelte', 'Qwik'])
 	public frameworks2 = signal([]) // Usado para ejemplificar el uso de @empty
